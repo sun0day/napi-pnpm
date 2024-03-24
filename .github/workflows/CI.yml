@@ -42,6 +42,7 @@ jobs:
               pnpm test 
             target: x86_64-pc-windows-msvc
           - host: windows-latest
+            setup: pnpm config set supportedArchitectures.cpu "ia32"
             build: |
               pnpm build:crate --target i686-pc-windows-msvc
               pnpm build:npm
@@ -84,6 +85,7 @@ jobs:
             setup: |
               sudo apt-get update
               sudo apt-get install gcc-arm-linux-gnueabihf -y
+              pnpm config set supportedArchitectures.cpu "arm"
             build: |
               pnpm build:crate --target armv7-unknown-linux-gnueabihf
               arm-linux-gnueabihf-strip $BIN_FILES
@@ -150,14 +152,6 @@ jobs:
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
         shell: bash
-      - name: Setup node x86
-        if: matrix.settings.target == 'i686-pc-windows-msvc'
-        run: pnpm config set supportedArchitectures.cpu "ia32"
-        shell: bash
-      - name: Setup node arm
-        if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
-        run: pnpm config set supportedArchitectures.cpu "arm"
-        shell: bash
       - name: Install dependencies
         run: pnpm i -g npm && pnpm install
       - name: Setup node x86
@@ -184,7 +178,8 @@ jobs:
         uses: docker/setup-qemu-action@v3
         with:
           platforms: arm
-        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
       - name: Setup and run tests on QEMU
         if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
         uses: addnab/docker-run-action@v3
