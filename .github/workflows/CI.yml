@@ -209,7 +209,8 @@ jobs:
         with:
           envs: DEBUG RUSTUP_HOME CARGO_HOME RUSTUP_IO_THREADS
           usesh: true
-          mem: 3000
+          memory: 8G
+          cpu_count: 3
           prepare: |
             pkg install -y -f curl node libnghttp2 npm 
             curl https://sh.rustup.rs -sSf --output rustup.sh
