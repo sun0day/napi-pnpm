@@ -17,6 +17,7 @@
   "labels": [
     "dependencies"
   ],
+  "automergeType": "pr",
   "rangeStrategy": "bump",
   "schedule": [
   ]
