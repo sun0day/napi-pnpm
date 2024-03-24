@@ -17,7 +17,8 @@ const bindings = [
   'bindings-x86_64-apple-darwin',
   'bindings-x86_64-pc-windows-msvc',
   'bindings-x86_64-unknown-linux-gnu',
-  'bindings-x86_64-unknown-linux-musl'
+  'bindings-x86_64-unknown-linux-musl',
+  "bindings-riscv64gc-unknown-linux-gnu"
 ]
 
 bindings.forEach(async (dir, index) => {
@@ -37,7 +38,7 @@ bindings.forEach(async (dir, index) => {
 
   // move js
   if(index === 0) {
-    const jss = await fg('**/core.*', {cwd: join(dir, './packages')})
+    const jss = await fg('**/binding.*', {cwd: join(dir, './packages')})
     cmd = `echo "mv ${dir} js"`
     jss.forEach(js => {
       const [pkg, file] = js.split('/')
