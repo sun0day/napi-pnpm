@@ -5,7 +5,9 @@
     "build": "pnpm build:crate && pnpm build:npm",
     "build:crate": "pnpm --filter \"{packages/**}\" run build:crate",
     "build:npm": "pnpm --filter \"{packages/**}\" run build:npm",
-    "test": "pnpm --filter \"{packages/**}\" run test"
+    "test": "pnpm --filter \"{packages/**}\" run test",
+    "artifacts": "pnpm --filter \"{packages/**}\" run artifacts",
+    "universal": "pnpm --filter \"{packages/**}\" run universal"
   },
   "devDependencies": {
     "typescript": "^5.2.2"
