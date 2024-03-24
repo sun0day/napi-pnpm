@@ -1,3 +1,3 @@
-# `kkkkk-linux-arm-gnueabihf`
+# `napi-pnpm-linux-arm-gnueabihf`
 
-This is the **armv7-unknown-linux-gnueabihf** binary for `kkkkk`
+This is the **armv7-unknown-linux-gnueabihf** binary for `napi-pnpm`

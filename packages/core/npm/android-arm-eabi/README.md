@@ -1,3 +1,3 @@
-# `kkkkk-android-arm-eabi`
+# `napi-pnpm-android-arm-eabi`
 
-This is the **armv7-linux-androideabi** binary for `kkkkk`
+This is the **armv7-linux-androideabi** binary for `napi-pnpm`

@@ -1,3 +1,3 @@
-# `kkkkk-linux-riscv64-gnu`
+# `napi-pnpm-linux-riscv64-gnu`
 
-This is the **riscv64gc-unknown-linux-gnu** binary for `kkkkk`
+This is the **riscv64gc-unknown-linux-gnu** binary for `napi-pnpm`

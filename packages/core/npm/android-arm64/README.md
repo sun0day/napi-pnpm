@@ -1,3 +1,3 @@
-# `kkkkk-android-arm64`
+# `napi-pnpm-android-arm64`
 
-This is the **aarch64-linux-android** binary for `kkkkk`
+This is the **aarch64-linux-android** binary for `napi-pnpm`

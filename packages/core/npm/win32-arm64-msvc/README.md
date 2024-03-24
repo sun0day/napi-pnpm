@@ -1,3 +1,3 @@
-# `kkkkk-win32-arm64-msvc`
+# `napi-pnpm-win32-arm64-msvc`
 
-This is the **aarch64-pc-windows-msvc** binary for `kkkkk`
+This is the **aarch64-pc-windows-msvc** binary for `napi-pnpm`

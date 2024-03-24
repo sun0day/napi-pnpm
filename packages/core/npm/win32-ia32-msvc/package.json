@@ -1,5 +1,5 @@
 {
-  "name": "kkkkk-win32-ia32-msvc",
+  "name": "napi-pnpm-win32-ia32-msvc",
   "version": "0.0.0",
   "os": [
     "win32"
@@ -7,9 +7,9 @@
   "cpu": [
     "ia32"
   ],
-  "main": "kkkkk.win32-ia32-msvc.node",
+  "main": "napi-pnpm.win32-ia32-msvc.node",
   "files": [
-    "kkkkk.win32-ia32-msvc.node"
+    "napi-pnpm.win32-ia32-msvc.node"
   ],
   "license": "MIT",
   "engines": {

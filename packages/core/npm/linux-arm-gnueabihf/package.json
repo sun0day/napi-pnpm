@@ -1,5 +1,5 @@
 {
-  "name": "kkkkk-linux-arm-gnueabihf",
+  "name": "napi-pnpm-linux-arm-gnueabihf",
   "version": "0.0.0",
   "os": [
     "linux"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm"
   ],
-  "main": "kkkkk.linux-arm-gnueabihf.node",
+  "main": "napi-pnpm.linux-arm-gnueabihf.node",
   "files": [
-    "kkkkk.linux-arm-gnueabihf.node"
+    "napi-pnpm.linux-arm-gnueabihf.node"
   ],
   "license": "MIT",
   "engines": {

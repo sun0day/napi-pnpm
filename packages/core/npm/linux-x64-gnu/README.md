@@ -1,3 +1,3 @@
-# `kkkkk-linux-x64-gnu`
+# `napi-pnpm-linux-x64-gnu`
 
-This is the **x86_64-unknown-linux-gnu** binary for `kkkkk`
+This is the **x86_64-unknown-linux-gnu** binary for `napi-pnpm`

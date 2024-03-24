@@ -1,3 +1,3 @@
-# `kkkkk-linux-x64-musl`
+# `napi-pnpm-linux-x64-musl`
 
-This is the **x86_64-unknown-linux-musl** binary for `kkkkk`
+This is the **x86_64-unknown-linux-musl** binary for `napi-pnpm`

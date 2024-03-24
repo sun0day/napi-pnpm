@@ -1,3 +1,3 @@
-# `kkkkk-darwin-x64`
+# `napi-pnpm-darwin-x64`
 
-This is the **x86_64-apple-darwin** binary for `kkkkk`
+This is the **x86_64-apple-darwin** binary for `napi-pnpm`

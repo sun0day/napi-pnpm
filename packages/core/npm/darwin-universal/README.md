@@ -1,3 +1,3 @@
-# `kkkkk-darwin-universal`
+# `napi-pnpm-darwin-universal`
 
-This is the **universal-apple-darwin** binary for `kkkkk`
+This is the **universal-apple-darwin** binary for `napi-pnpm`

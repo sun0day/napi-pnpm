@@ -1,5 +1,5 @@
 {
-  "name": "kkkkk-linux-riscv64-gnu",
+  "name": "napi-pnpm-linux-riscv64-gnu",
   "version": "0.0.0",
   "os": [
     "linux"
@@ -7,9 +7,9 @@
   "cpu": [
     "riscv64"
   ],
-  "main": "kkkkk.linux-riscv64-gnu.node",
+  "main": "napi-pnpm.linux-riscv64-gnu.node",
   "files": [
-    "kkkkk.linux-riscv64-gnu.node"
+    "napi-pnpm.linux-riscv64-gnu.node"
   ],
   "license": "MIT",
   "engines": {

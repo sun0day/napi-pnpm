@@ -1,5 +1,5 @@
 {
-  "name": "kkkkk-android-arm-eabi",
+  "name": "napi-pnpm-android-arm-eabi",
   "version": "0.0.0",
   "os": [
     "android"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm"
   ],
-  "main": "kkkkk.android-arm-eabi.node",
+  "main": "napi-pnpm.android-arm-eabi.node",
   "files": [
-    "kkkkk.android-arm-eabi.node"
+    "napi-pnpm.android-arm-eabi.node"
   ],
   "license": "MIT",
   "engines": {

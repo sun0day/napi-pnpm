@@ -1,5 +1,5 @@
 {
-  "name": "kkkkk-darwin-x64",
+  "name": "napi-pnpm-darwin-x64",
   "version": "0.0.0",
   "os": [
     "darwin"
@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "kkkkk.darwin-x64.node",
+  "main": "napi-pnpm.darwin-x64.node",
   "files": [
-    "kkkkk.darwin-x64.node"
+    "napi-pnpm.darwin-x64.node"
   ],
   "license": "MIT",
   "engines": {

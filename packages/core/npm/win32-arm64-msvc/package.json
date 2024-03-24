@@ -1,5 +1,5 @@
 {
-  "name": "kkkkk-win32-arm64-msvc",
+  "name": "napi-pnpm-win32-arm64-msvc",
   "version": "0.0.0",
   "os": [
     "win32"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm64"
   ],
-  "main": "kkkkk.win32-arm64-msvc.node",
+  "main": "napi-pnpm.win32-arm64-msvc.node",
   "files": [
-    "kkkkk.win32-arm64-msvc.node"
+    "napi-pnpm.win32-arm64-msvc.node"
   ],
   "license": "MIT",
   "engines": {
