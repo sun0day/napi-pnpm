@@ -1,6 +1,12 @@
 {
   "name": "root",
   "version": "0.0.0",
+  "scripts": {
+    "build": "pnpm build:crate && pnpm build:npm",
+    "build:crate": "pnpm --filter \"{packages/**}\" run build:crate",
+    "build:npm": "pnpm --filter \"{packages/**}\" run build:npm",
+    "test": "pnpm --filter \"{packages/**}\" run test"
+  },
   "dependencies": {
   }
 }
