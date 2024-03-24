@@ -188,6 +188,8 @@ jobs:
           options: '--platform linux/arm/v7 -v ${{ github.workspace }}:/build -w /build'
           run: |
             set -e
+            npm i -g pnpm
+            pnpm install
             pnpm test
             ls -la
   build-freebsd:
