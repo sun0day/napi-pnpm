@@ -19,6 +19,5 @@
   ],
   "rangeStrategy": "bump",
   "schedule": [
-    "before 1am"
   ]
 }
