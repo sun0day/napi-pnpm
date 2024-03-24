@@ -5,8 +5,8 @@
   "types": "index.d.ts",
   "description": "Fast APIs for js/ts module graph.",
   "files": [
-    "core.js",
-    "core.d.ts",
+    "binding.js",
+    "binding.d.ts",
     "index.js",
     "index.d.ts"
   ],
@@ -35,6 +35,22 @@
     }
   },
   "license": "MIT",
+  "engines": {
+    "node": ">= 18"
+  },
+  "ava": {
+    "timeout": "3m"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build:crate": "napi build --platform --release --dts binding.d.ts --js binding.js",
+    "build:npm": "tsc",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "ava",
+    "universal": "napi universal",
+    "version": "napi version"
+  },
   "dependencies": {
   },
   "devDependencies": {
@@ -42,18 +58,5 @@
     "@types/node": "^20.9.0",
     "ava": "^5.1.1",
     "typescript": "^5.2.2"
-  },
-  "engines": {
-    "node": ">= 18"
-  },
-  "scripts": {
-    "artifacts": "napi artifacts",
-    "build:crate": "napi build --platform --release --dts core.d.ts --js core.js",
-    "build:npm": "tsc",
-    "build:debug": "napi build --platform",
-    "prepublishOnly": "napi prepublish -t npm",
-    "test": "ava  --config ./ava.config.mjs",
-    "universal": "napi universal",
-    "version": "napi version"
   }
 }

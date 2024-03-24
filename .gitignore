@@ -134,8 +134,8 @@ dist
 **/__test__/**/*lock.json
 
 # npm build
-packages/*/core.js
-packages/*/core.d.ts
+packages/*/binding.js
+packages/*/binding.d.ts
 packages/*/index.d.ts
 packages/*/index.js
 

@@ -7,6 +7,8 @@
     "build:npm": "pnpm --filter \"{packages/**}\" run build:npm",
     "test": "pnpm --filter \"{packages/**}\" run test"
   },
-  "dependencies": {
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.2.2"
   }
 }
