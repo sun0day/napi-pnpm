@@ -8,7 +8,9 @@
     "group:allNonMajor",
     ":preserveSemverRanges",
     ":disablePeerDependencies",
-    ":dependencyDashboard"
+    ":dependencyDashboard",
+    ":automergeAll",
+    ":automergePr"
   ],
   "ignoreDeps": [],
   "ignorePaths": [
@@ -17,8 +19,6 @@
   "labels": [
     "dependencies"
   ],
-  "automergeType": "pr",
   "rangeStrategy": "bump",
-  "schedule": [
-  ]
+  "schedule": []
 }
