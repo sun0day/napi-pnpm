@@ -1,0 +1,18 @@
+{
+  "name": "kkkkk-android-arm64",
+  "version": "0.0.0",
+  "os": [
+    "android"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "kkkkk.android-arm64.node",
+  "files": [
+    "kkkkk.android-arm64.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}

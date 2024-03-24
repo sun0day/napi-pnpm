@@ -1,0 +1,59 @@
+{
+  "name": "napi-pnpm",
+  "version": "0.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "description": "Fast APIs for js/ts module graph.",
+  "files": [
+    "core.js",
+    "core.d.ts",
+    "index.js",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "napi",
+    "pnpm",
+    "template"
+  ],
+  "napi": {
+    "name": "napi-pnpm",
+    "triples": {
+      "additional": [
+        "aarch64-apple-darwin",
+        "aarch64-linux-android",
+        "aarch64-unknown-linux-gnu",
+        "aarch64-unknown-linux-musl",
+        "aarch64-pc-windows-msvc",
+        "armv7-unknown-linux-gnueabihf",
+        "x86_64-unknown-linux-musl",
+        "x86_64-unknown-freebsd",
+        "i686-pc-windows-msvc",
+        "armv7-linux-androideabi",
+        "universal-apple-darwin",
+        "riscv64gc-unknown-linux-gnu"
+      ]
+    }
+  },
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2.16.3",
+    "@types/node": "^20.9.0",
+    "ava": "^5.1.1",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">= 18"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build:crate": "napi build --platform --release --dts core.d.ts --js core.js",
+    "build:npm": "tsc",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "ava  --config ./ava.config.mjs",
+    "universal": "napi universal",
+    "version": "napi version"
+  }
+}

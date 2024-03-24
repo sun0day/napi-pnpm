@@ -1,0 +1,15 @@
+{
+  "name": "kkkkk-darwin-universal",
+  "version": "0.0.0",
+  "os": [
+    "darwin"
+  ],
+  "main": "kkkkk.darwin-universal.node",
+  "files": [
+    "kkkkk.darwin-universal.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}
