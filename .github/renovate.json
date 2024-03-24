@@ -18,5 +18,7 @@
     "dependencies"
   ],
   "rangeStrategy": "bump",
-  "schedule": []
+  "schedule": [
+    "before 1am"
+  ]
 }
