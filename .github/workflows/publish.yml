@@ -297,9 +297,6 @@ jobs:
       - name: Enter prerelease
         if: ${{ contains(github.ref, 'beta') }}
         run: pnpm changeset pre enter beta
-      - name: Exit prerelease
-        if: ${{ ! contains(github.ref, 'beta') }}
-        run: pnpm changeset pre exit
       - name: Publish
         run: |
           pnpm changeset version
