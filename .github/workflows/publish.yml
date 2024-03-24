@@ -108,7 +108,8 @@ jobs:
             target: aarch64-pc-windows-msvc
             build: |
               pnpm build:crate --target aarch64-pc-windows-msvc
-        node: '20'
+        node: 
+          - '20'
     name: stable - ${{ matrix.settings.target }} - node@${{ matrix.node }}
     runs-on: ${{ matrix.settings.host }}
     steps:
