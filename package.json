@@ -10,6 +10,7 @@
     "universal": "pnpm --filter \"{packages/**}\" run universal"
   },
   "devDependencies": {
+    "fast-glob": "^3.3.2",
     "typescript": "^5.2.2"
   }
 }
