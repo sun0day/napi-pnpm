@@ -8,19 +8,12 @@ env:
 permissions:
   contents: write
   id-token: write
-'on':
+on:
   push:
+    tags: 
+      - 'v*'
     branches:
-      - main
-    tags-ignore:
-      - '**'
-    paths-ignore:
-      - '**/*.md'
-      - LICENSE
-      - '**/*.gitignore'
-      - .editorconfig
-      - docs/**
-  pull_request: null
+      - 'main'
 jobs:
   build:
     strategy:
@@ -294,12 +287,27 @@ jobs:
         shell: bash
       - name: Build JS
         run: pnpm build:npm
-      - name: Publish
+      - name: Setup npm
         run: |
           npm config set provenance true
           npm config set access public
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+        env: 
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Enter prerelease
+        if: ${{ contains(github.ref, 'beta') }}
+        run: pnpm changeset pre enter beta
+      - name: Exit prerelease
+        if: ${{ ! contains(github.ref, 'beta') }}
+        run: pnpm changeset pre exit
+      - name: Publish
+        run: |
+          pnpm changeset version
           pnpm publish -r --filter "{packages/**}" --access public --no-git-checks
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "chore: bump versions"
+          git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
