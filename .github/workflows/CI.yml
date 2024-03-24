@@ -53,7 +53,6 @@ jobs:
             build: |-
               set -e && unset CC_x86_64_unknown_linux_gnu && unset CC &&
               pnpm build:crate --target x86_64-unknown-linux-gnu &&
-              strip -x $BIN_FILES &&
               pnpm build:npm &&
               pnpm test
           - host: ubuntu-latest
@@ -62,9 +61,7 @@ jobs:
             build: |
               set -e
               git config --global --add safe.directory /build
-               
               pnpm build 
-              strip -x $BIN_FILES 
               pnpm test 
           - host: ubuntu-latest
             target: riscv64gc-unknown-linux-gnu
@@ -82,8 +79,7 @@ jobs:
               export JEMALLOC_SYS_WITH_LG_PAGE=16 &&
               rustup target add aarch64-unknown-linux-gnu &&
               export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc
-              pnpm build:crate --target aarch64-unknown-linux-gnu &&
-              aarch64-unknown-linux-gnu-strip $BIN_FILES
+              pnpm build:crate --target aarch64-unknown-linux-gnu 
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
             setup: |
@@ -108,8 +104,7 @@ jobs:
             build: |-
               set -e &&
               rustup target add aarch64-unknown-linux-musl &&
-              pnpm build:crate --target aarch64-unknown-linux-musl &&
-              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip $BIN_FILES
+              pnpm build:crate --target aarch64-unknown-linux-musl 
           - host: windows-latest
             target: aarch64-pc-windows-msvc
             build: |
