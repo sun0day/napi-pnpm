@@ -46,7 +46,7 @@
     "build:crate": "napi build --platform --release --dts binding.d.ts --js binding.js",
     "build:npm": "tsc",
     "build:debug": "napi build --platform",
-    "prepublishOnly": "napi prepublish -t npm",
+    "prepublishOnly": "napi prepublish -t npm --skip-gh-release",
     "test": "ava",
     "universal": "napi universal",
     "version": "napi version"
