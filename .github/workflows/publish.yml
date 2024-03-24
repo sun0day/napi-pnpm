@@ -217,14 +217,14 @@ jobs:
             strip -x $BIN_FILES
             rm -rf ./**/node_modules
             rm -rf ./**/target
-        - name: Upload artifact
-          uses: actions/upload-artifact@v3
-          with:
-            name: bindings-freebsd
-            path: |
-              ${{ env.BUILD_CRATE_BIN }}
-              ${{ env.BUILD_CRATE_JS }}
-            if-no-files-found: error
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bindings-freebsd
+          path: |
+            ${{ env.BUILD_CRATE_BIN }}
+            ${{ env.BUILD_CRATE_JS }}
+          if-no-files-found: error
   universal-macOS:
     name: Build universal macOS binary
     needs:
