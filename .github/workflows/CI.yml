@@ -20,7 +20,7 @@ permissions:
       - docs/**
   pull_request: null
 jobs:
-  build_test:
+  build-test:
     strategy:
       fail-fast: false
       matrix:
@@ -70,8 +70,6 @@ jobs:
               sudo apt-get install gcc-riscv64-linux-gnu -y
             build: |
               pnpm build:crate --target riscv64gc-unknown-linux-gnu
-              pnpm build:npm
-              pnpm test
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
@@ -89,6 +87,7 @@ jobs:
             build: |
               pnpm build:crate --target armv7-unknown-linux-gnueabihf
               arm-linux-gnueabihf-strip $BIN_FILES
+              pnpm build:npm
           - host: ubuntu-latest
             target: aarch64-linux-android
             build: |
@@ -146,7 +145,7 @@ jobs:
       - uses: goto-bus-stop/setup-zig@v2
         if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
         with:
-          version: 0.10.1
+          version: 0.11.0
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
@@ -154,6 +153,10 @@ jobs:
       - name: Setup node x86
         if: matrix.settings.target == 'i686-pc-windows-msvc'
         run: pnpm config set supportedArchitectures.cpu "ia32"
+        shell: bash
+      - name: Setup node arm
+        if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
+        run: pnpm config set supportedArchitectures.cpu "arm"
         shell: bash
       - name: Install dependencies
         run: pnpm i -g npm && pnpm install
@@ -176,6 +179,22 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         shell: bash
+      - name: Set up QEMU
+        if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm
+        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Setup and run tests on QEMU
+        if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
+        uses: addnab/docker-run-action@v3
+        with:
+          image: node:${{ matrix.node }}-bullseye-slim
+          options: '--platform linux/arm/v7 -v ${{ github.workspace }}:/build -w /build'
+          run: |
+            set -e
+            pnpm test
+            ls -la
   build-freebsd:
     runs-on: ubuntu-latest
     name: Build FreeBSD
