@@ -1,0 +1,221 @@
+name: CI
+env:
+  DEBUG: napi:*
+  MACOSX_DEPLOYMENT_TARGET: '10.13'
+  BIN_FILES: packages/**/*.node
+permissions:
+  contents: write
+  id-token: write
+'on':
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '**'
+    paths-ignore:
+      - '**/*.md'
+      - LICENSE
+      - '**/*.gitignore'
+      - .editorconfig
+      - docs/**
+  pull_request: null
+jobs:
+  build_test:
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+          - host: macos-latest
+            target: x86_64-apple-darwin
+            build: |
+              pnpm build
+              strip -x $BIN_FILES
+              pnpm test 
+          - host: macos-latest
+            target: aarch64-apple-darwin
+            build: |
+              pnpm build:crate --target aarch64-apple-darwin
+              strip -x $BIN_FILES
+          - host: windows-latest
+            build: |
+              pnpm build
+              pnpm test 
+            target: x86_64-pc-windows-msvc
+          - host: windows-latest
+            build: |
+              pnpm build:crate --target i686-pc-windows-msvc
+              pnpm build:npm
+              pnpm test 
+            target: i686-pc-windows-msvc
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
+            build: |-
+              set -e && unset CC_x86_64_unknown_linux_gnu && unset CC &&
+              pnpm build:crate --target x86_64-unknown-linux-gnu &&
+              strip -x $BIN_FILES &&
+              pnpm build:npm &&
+              pnpm test
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+            build: |
+              set -e
+              git config --global --add safe.directory /build
+               
+              pnpm build 
+              strip -x $BIN_FILES 
+              pnpm test 
+          - host: ubuntu-latest
+            target: riscv64gc-unknown-linux-gnu
+            setup: |
+              sudo apt-get update
+              sudo apt-get install gcc-riscv64-linux-gnu -y
+            build: |
+              pnpm build:crate --target riscv64gc-unknown-linux-gnu
+              strip $BIN_FILES
+          - host: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
+            build: |-
+              set -e &&
+              export JEMALLOC_SYS_WITH_LG_PAGE=16 &&
+              rustup target add aarch64-unknown-linux-gnu &&
+              export CC_aarch64_unknown_linux_gnu=/usr/aarch64-unknown-linux-gnu/bin/aarch64-unknown-linux-gnu-gcc
+              pnpm build:crate --target aarch64-unknown-linux-gnu &&
+              aarch64-unknown-linux-gnu-strip $BIN_FILES
+          - host: ubuntu-latest
+            target: armv7-unknown-linux-gnueabihf
+            setup: |
+              sudo apt-get update
+              sudo apt-get install gcc-arm-linux-gnueabihf -y
+            build: |
+              pnpm build:crate --target armv7-unknown-linux-gnueabihf
+              arm-linux-gnueabihf-strip $BIN_FILES
+          - host: ubuntu-latest
+            target: aarch64-linux-android
+            build: |
+              pnpm build:crate --target aarch64-linux-android
+              ${ANDROID_NDK_LATEST_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip $BIN_FILES
+          - host: ubuntu-latest
+            target: armv7-linux-androideabi
+            build: |
+              pnpm build:crate --target armv7-linux-androideabi
+              ${ANDROID_NDK_LATEST_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip $BIN_FILES
+          - host: ubuntu-latest
+            target: aarch64-unknown-linux-musl
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+            build: |-
+              set -e &&
+              rustup target add aarch64-unknown-linux-musl &&
+              pnpm build:crate --target aarch64-unknown-linux-musl &&
+              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip $BIN_FILES
+          - host: windows-latest
+            target: aarch64-pc-windows-msvc
+            build: |
+              pnpm build:crate --target aarch64-pc-windows-msvc
+        node:
+          - '18'
+          - '20'
+    name: stable - ${{ matrix.settings.target }} - node@${{ matrix.node }}
+    runs-on: ${{ matrix.settings.host }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - name: Setup node
+        uses: actions/setup-node@v3
+        if: ${{ !matrix.settings.docker }}
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+          cache: pnpm
+      - name: Install
+        uses: dtolnay/rust-toolchain@stable
+        if: ${{ !matrix.settings.docker }}
+        with:
+          toolchain: stable
+          targets: ${{ matrix.settings.target }}
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            .cargo-cache
+            target/
+          key: ${{ matrix.settings.target }}-cargo-${{ matrix.settings.host }}
+      - uses: goto-bus-stop/setup-zig@v2
+        if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
+        with:
+          version: 0.10.1
+      - name: Setup toolchain
+        run: ${{ matrix.settings.setup }}
+        if: ${{ matrix.settings.setup }}
+        shell: bash
+      - name: Setup node x86
+        if: matrix.settings.target == 'i686-pc-windows-msvc'
+        run: pnpm config set supportedArchitectures.cpu "ia32"
+        shell: bash
+      - name: Install dependencies
+        run: pnpm i -g npm && pnpm install
+      - name: Setup node x86
+        uses: actions/setup-node@v3
+        if: matrix.settings.target == 'i686-pc-windows-msvc'
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+          cache: pnpm
+          architecture: x86
+      - name: Build in docker
+        uses: addnab/docker-run-action@v3
+        if: ${{ matrix.settings.docker }}
+        with:
+          image: ${{ matrix.settings.docker }}
+          options: '--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build'
+          run: ${{ matrix.settings.build }}
+      - name: Build
+        run: ${{ matrix.settings.build }}
+        if: ${{ !matrix.settings.docker }}
+        shell: bash
+  build-freebsd:
+    runs-on: ubuntu-latest
+    name: Build FreeBSD
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        id: build
+        uses: vmactions/freebsd-vm@v1
+        env:
+          DEBUG: napi:*
+          RUSTUP_HOME: /usr/local/rustup
+          CARGO_HOME: /usr/local/cargo
+          RUSTUP_IO_THREADS: 1
+        with:
+          envs: DEBUG RUSTUP_HOME CARGO_HOME RUSTUP_IO_THREADS
+          usesh: true
+          mem: 3000
+          prepare: |
+            pkg install -y -f curl node libnghttp2 npm 
+            curl https://sh.rustup.rs -sSf --output rustup.sh
+            sh rustup.sh -y --profile minimal --default-toolchain beta
+            export PATH="/usr/local/cargo/bin:$PATH"
+            npm i -g pnpm
+            echo "~~~~ rustc --version ~~~~"
+            rustc --version
+            echo "~~~~ node -v ~~~~"
+            node -v
+            echo "~~~~ pnpm --version ~~~~"
+            pnpm --version
+          run: |
+            export PATH="/usr/local/cargo/bin:$PATH"
+            pwd
+            whoami
+            env
+            freebsd-version
+            GITHUB_EVENT_PATH= pnpm install
+            GITHUB_EVENT_PATH= pnpm build
+            strip -x $BIN_FILES
+            GITHUB_EVENT_PATH= pnpm test
