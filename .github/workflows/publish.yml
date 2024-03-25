@@ -109,7 +109,7 @@ jobs:
         with:
           version: latest
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         if: ${{ !matrix.settings.docker }}
         with:
           node-version: ${{ matrix.node }}
@@ -142,7 +142,7 @@ jobs:
       - name: Install dependencies
         run: pnpm i -g npm && pnpm install
       - name: Setup node x86
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         if: matrix.settings.target == 'i686-pc-windows-msvc'
         with:
           node-version: ${{ matrix.node }}
@@ -228,7 +228,7 @@ jobs:
         with:
           version: latest
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           check-latest: true
@@ -267,7 +267,7 @@ jobs:
         with:
           version: latest
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           check-latest: true
