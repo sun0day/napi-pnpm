@@ -161,7 +161,7 @@ jobs:
         if: ${{ !matrix.settings.docker }}
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
           path: |
@@ -210,7 +210,7 @@ jobs:
             rm -rf ./**/node_modules
             rm -rf ./**/target
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bindings-freebsd
           path: |
@@ -236,11 +236,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Download macOS x64 artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bindings-x86_64-apple-darwin
       - name: Download macOS arm64 artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bindings-aarch64-apple-darwin
       - name: List binaries
@@ -248,7 +248,7 @@ jobs:
       - name: Combine binaries
         run: pnpm universal -d ./
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bindings-universal-apple-darwin
           path: |
@@ -275,7 +275,7 @@ jobs:
       - name: Install dependencies
         run: pnpm i -g npm && pnpm install
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: .
       - name: Move artifacts
