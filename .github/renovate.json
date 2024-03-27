@@ -6,6 +6,7 @@
   "extends": [
     "config:base",
     "group:allNonMajor",
+    "schedule:weekly",
     ":preserveSemverRanges",
     ":disablePeerDependencies",
     ":dependencyDashboard"
@@ -17,8 +18,5 @@
   "labels": [
     "dependencies"
   ],
-  "rangeStrategy": "bump",
-  "schedule": [
-    "before 1am"
-  ]
+  "rangeStrategy": "bump"
 }
