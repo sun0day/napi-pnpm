@@ -27,20 +27,25 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
+            architecture: x64
             build: |
-              pnpm build
+              pnpm build:crate --target x86_64-apple-darwin
+              pnpm build:npm
               strip -x $BIN_FILES
               pnpm test 
           - host: macos-latest
             target: aarch64-apple-darwin
+            architecture: arm64
             build: |
               pnpm build:crate --target aarch64-apple-darwin
               strip -x $BIN_FILES
           - host: windows-latest
             build: |
-              pnpm build
+              pnpm build:crate --target x86_64-pc-windows-msvc
+              pnpm build:npm
               pnpm test 
             target: x86_64-pc-windows-msvc
+            architecture: x64
           - host: windows-latest
             setup: pnpm config set supportedArchitectures.cpu "ia32"
             build: |
@@ -128,6 +133,7 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
           cache: pnpm
+          architecture: ${{ matrix.settings.architecture }}
       - name: Install
         uses: dtolnay/rust-toolchain@stable
         if: ${{ !matrix.settings.docker }}
@@ -147,7 +153,7 @@ jobs:
       - uses: goto-bus-stop/setup-zig@v2
         if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
         with:
-          version: 0.11.0
+          version: 0.12.0
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
@@ -194,42 +200,41 @@ jobs:
             pnpm test
             ls -la
   build-freebsd:
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     name: Build FreeBSD
     steps:
       - uses: actions/checkout@v4
       - name: Build
         id: build
-        uses: vmactions/freebsd-vm@v1
+        uses: cross-platform-actions/action@v0.24.0
         env:
           DEBUG: napi:*
-          RUSTUP_HOME: /usr/local/rustup
-          CARGO_HOME: /usr/local/cargo
           RUSTUP_IO_THREADS: 1
         with:
-          envs: DEBUG RUSTUP_HOME CARGO_HOME RUSTUP_IO_THREADS
-          usesh: true
+          operating_system: freebsd
+          version: '13.2'
           memory: 8G
           cpu_count: 3
-          prepare: |
-            pkg install -y -f curl node libnghttp2 npm 
+          environment_variables: 'DEBUG RUSTUP_IO_THREADS'
+          shell: bash
+          run: |
+            sudo pkg install -y -f curl node libnghttp2 npm
+            sudo npm install -g corepack
             curl https://sh.rustup.rs -sSf --output rustup.sh
             sh rustup.sh -y --profile minimal --default-toolchain beta
-            export PATH="/usr/local/cargo/bin:$PATH"
-            npm i -g pnpm
+            corepack prepare
+            corepack enable
+            source "$HOME/.cargo/env"
             echo "~~~~ rustc --version ~~~~"
             rustc --version
             echo "~~~~ node -v ~~~~"
             node -v
             echo "~~~~ pnpm --version ~~~~"
             pnpm --version
-          run: |
-            export PATH="/usr/local/cargo/bin:$PATH"
             pwd
             whoami
             env
             freebsd-version
-            GITHUB_EVENT_PATH= pnpm install
-            GITHUB_EVENT_PATH= pnpm build
-            strip -x $BIN_FILES
-            GITHUB_EVENT_PATH= pnpm test
+            pnpm install
+            pnpm build
+            pnpm test
