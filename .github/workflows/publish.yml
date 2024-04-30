@@ -25,15 +25,19 @@ jobs:
               pnpm build:crate --target x86_64-apple-darwin
               pnpm build:npm
               strip -x $BIN_FILES
+            architecture: x64
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
               pnpm build:crate --target aarch64-apple-darwin
               strip -x $BIN_FILES
+            architecture: arm64
           - host: windows-latest
             build: |
-              pnpm build
+              pnpm build:crate --target x86_64-pc-windows-msvc
+              pnpm build:npm
             target: x86_64-pc-windows-msvc
+            architecture: x64
           - host: windows-latest
             setup: pnpm config set supportedArchitectures.cpu "ia32"
             build: |
@@ -117,6 +121,7 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
           cache: pnpm
+          architecture: ${{ matrix.settings.architecture }}
       - name: Install
         uses: dtolnay/rust-toolchain@stable
         if: ${{ !matrix.settings.docker }}
