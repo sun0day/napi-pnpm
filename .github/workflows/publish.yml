@@ -12,7 +12,6 @@ on:
   push:
     tags: 
       - 'v*'
-  pull_request: null
 jobs:
   build:
     strategy:
