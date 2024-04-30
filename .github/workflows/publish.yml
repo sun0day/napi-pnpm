@@ -22,7 +22,8 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
             build: |
-              pnpm build
+              pnpm build:crate --target x86_64-apple-darwin
+              pnpm build:npm
               strip -x $BIN_FILES
           - host: macos-latest
             target: aarch64-apple-darwin
