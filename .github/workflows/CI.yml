@@ -229,7 +229,6 @@ jobs:
             whoami
             env
             freebsd-version
-            GITHUB_EVENT_PATH= pnpm install
-            GITHUB_EVENT_PATH= pnpm build
-            strip -x $BIN_FILES
-            GITHUB_EVENT_PATH= pnpm test
+            pnpm install
+            pnpm build
+            pnpm test
