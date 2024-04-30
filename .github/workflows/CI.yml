@@ -210,6 +210,7 @@ jobs:
           memory: 8G
           cpu_count: 3
           environment_variables: 'DEBUG RUSTUP_IO_THREADS'
+          shell: bash
           run: |
             sudo pkg install -y -f curl node libnghttp2 npm
             sudo npm install -g corepack
