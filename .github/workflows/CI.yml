@@ -207,11 +207,10 @@ jobs:
         with:
           operating_system: freebsd
           version: '13.2'
-          usesh: true
           memory: 8G
           cpu_count: 3
           environment_variables: 'DEBUG RUSTUP_IO_THREADS'
-          prepare: |
+          run: |
             sudo pkg install -y -f curl node libnghttp2 npm
             sudo npm install -g corepack
             curl https://sh.rustup.rs -sSf --output rustup.sh
@@ -225,7 +224,6 @@ jobs:
             node -v
             echo "~~~~ pnpm --version ~~~~"
             pnpm --version
-          run: |
             pwd
             whoami
             env
