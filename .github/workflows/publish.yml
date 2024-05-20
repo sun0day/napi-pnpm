@@ -303,11 +303,17 @@ jobs:
       - name: Publish
         run: |
           pnpm changeset version
+          pnpm install --frozen-lockfile=false
           pnpm publish -r --filter "{packages/**}" --access public --no-git-checks
+      - name: Create Version PR
+        run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
           git commit -m "chore: bump versions"
           git push
+          git switch -c chore/bumpVersions
+          git push --set-upstream origin chore/bumpVersions --force
+          gh pr create -B main -H chore/bumpVersions --title "chore: bump versions" --body "bump versions after release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
