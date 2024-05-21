@@ -175,7 +175,7 @@ jobs:
             ${{ env.BUILD_CRATE_JS }}
           if-no-files-found: error
   build-freebsd:
-    runs-on: macos-13
+    runs-on: macos-14
     name: Build FreeBSD
     steps:
       - uses: actions/checkout@v4
